@@ -4,7 +4,7 @@ from .models import MyUser, Follow
 
 
 class MyUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'username', 'is_staff', 'is_superuser',
+    list_display = ('id', 'email', 'username', 'is_staff', 'is_superuser',
                     'first_name', 'last_name',)
     list_filter = ('email', 'username',)
     empty_value_display = '-пусто-'

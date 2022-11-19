@@ -6,12 +6,12 @@ from .models import (
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color', 'slug',)
+    list_display = ('id', 'name', 'color', 'slug',)
     empty_value_display = '-пусто-'
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'measurement_unit',)
+    list_display = ('id', 'name', 'measurement_unit',)
     list_filter = ('name',)
     empty_value_display = '-пусто-'
 
@@ -40,7 +40,7 @@ class TagInRecipeInLine(admin.TabularInline):
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientInRecipeInLine, TagInRecipeInLine,)
-    list_display = ('name', 'author', 'favorites',)
+    list_display = ('id', 'name', 'author', 'favorites',)
     list_editable = ('author',)
     list_filter = ('author', 'name', 'tags__name',)
     empty_value_display = '-пусто-'
