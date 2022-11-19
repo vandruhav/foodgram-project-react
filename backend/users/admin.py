@@ -3,8 +3,8 @@ from django.contrib import admin
 from .models import MyUser, Follow
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'username', 'is_staff', 'is_superuser',
+class MyUserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'username', 'is_staff', 'is_superuser',
                     'first_name', 'last_name',)
     list_filter = ('email', 'username',)
     empty_value_display = '-пусто-'
@@ -16,5 +16,5 @@ class FollowAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(MyUser, UserAdmin)
+admin.site.register(MyUser, MyUserAdmin)
 admin.site.register(Follow, FollowAdmin)

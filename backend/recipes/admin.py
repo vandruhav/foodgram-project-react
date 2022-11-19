@@ -1,15 +1,17 @@
 from django.contrib import admin
 
-from .models import Tag, Ingredient, IngredientInRecipe, TagInRecipe, Recipe
+from .models import (
+    Tag, Ingredient, IngredientInRecipe, TagInRecipe, Recipe, Favorite, Cart,
+)
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'color', 'slug',)
+    list_display = ('name', 'color', 'slug',)
     empty_value_display = '-пусто-'
 
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'measurement_unit',)
+    list_display = ('name', 'measurement_unit',)
     list_filter = ('name',)
     empty_value_display = '-пусто-'
 
@@ -38,8 +40,24 @@ class TagInRecipeInLine(admin.TabularInline):
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientInRecipeInLine, TagInRecipeInLine,)
-    list_display = ('id', 'author', 'name', 'text', 'cooking_time',)
+    list_display = ('name', 'author', 'favorites',)
     list_editable = ('author',)
+    list_filter = ('author', 'name', 'tags__name',)
+    empty_value_display = '-пусто-'
+
+    def favorites(self, obj):
+        return obj.favorites.count()
+
+
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'recipe',)
+    list_editable = ('user', 'recipe',)
+    empty_value_display = '-пусто-'
+
+
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'recipe',)
+    list_editable = ('user', 'recipe',)
     empty_value_display = '-пусто-'
 
 
@@ -48,3 +66,5 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(IngredientInRecipe, IngredientInRecipeAdmin)
 admin.site.register(TagInRecipe, TagInRecipeAdmin)
 admin.site.register(Recipe, RecipeAdmin)
+admin.site.register(Favorite, FavoriteAdmin)
+admin.site.register(Cart, CartAdmin)
