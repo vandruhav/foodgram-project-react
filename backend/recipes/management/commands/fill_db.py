@@ -1,7 +1,6 @@
 import csv
 from django.core.management.base import BaseCommand
 
-#from backend.recipes.models import Ingredient
 from ...models import Ingredient
 
 file_table = {
