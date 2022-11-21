@@ -61,15 +61,18 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         user = self.context.get('request').user
-        if user.is_anonymous:
-            return False
-        return Recipe.objects.filter(favorites__user=user, id=obj.id).exists()
+        return (
+                user.is_authenticated
+                and Recipe.objects.filter(
+                    favorites__user=user, id=obj.id).exists()
+        )
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
-        if user.is_anonymous:
-            return False
-        return Recipe.objects.filter(cart__user=user, id=obj.id).exists()
+        return (
+                user.is_authenticated
+                and Recipe.objects.filter(cart__user=user, id=obj.id).exists()
+        )
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
@@ -84,7 +87,11 @@ class RecipeSerializer(serializers.ModelSerializer):
             if obj in total_ingredients:
                 raise serializers.ValidationError('Ингредиент есть в рецепте!')
             total_ingredients.append(obj)
-            if int(ingredient['amount']) < 0:
+            if not isinstance(ingredient['amount'], int):
+                raise serializers.ValidationError(
+                    'Количество ингредиента должно быть целым числом!'
+                )
+            if int(ingredient['amount']) <= 0:
                 raise serializers.ValidationError('Минимальное количество - 1!')
         data['ingredients'] = ingredients
         return data

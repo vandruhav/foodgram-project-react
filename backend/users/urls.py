@@ -6,7 +6,7 @@ from .views import FollowViewSet
 app_name = 'users'
 
 router = DefaultRouter()
-router.register(r'users/subscriptions', FollowViewSet, basename='follow')
+router.register('users/subscriptions', FollowViewSet, basename='follow')
 router.register(r'users/(?P<id>\d+)/subscribe', FollowViewSet,
                 basename='subscribe')
 

@@ -27,7 +27,7 @@ class Tag(models.Model):
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name',)
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
@@ -47,12 +47,12 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         constraints = [
-            models.UniqueConstraint(fields=['name', 'measurement_unit'],
-                                    name='unique_ingredients'),
+            models.UniqueConstraint(fields=('name', 'measurement_unit',),
+                                    name='unique_ingredients',),
         ]
 
     def __str__(self):
@@ -87,10 +87,10 @@ class Recipe(models.Model):
         through='TagInRecipe',
         verbose_name='Теги рецепта',
     )
-    cooking_time = models.PositiveIntegerField(
+    cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления',
         validators=[
-            MinValueValidator(1, message='Минимальное время - 1 минута!', ),
+            MinValueValidator(1, message='Минимальное время - 1 минута!',),
         ],
     )
     pub_date = models.DateTimeField(
@@ -99,7 +99,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ('-pub_date',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
@@ -120,20 +120,20 @@ class IngredientInRecipe(models.Model):
         related_name='recipes_of_ingredient',
         verbose_name='Ингредиент',
     )
-    amount = models.PositiveIntegerField(
+    amount = models.PositiveSmallIntegerField(
         verbose_name='Количество ингредиента',
         validators=[
-            MinValueValidator(1, message='Минимальное количество - 1!', ),
+            MinValueValidator(1, message='Минимальное количество - 1!',),
         ],
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('id',)
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецептах'
         constraints = [
-            models.UniqueConstraint(fields=['recipe', 'ingredient'],
-                                    name='unique_recipe_ingredient'),
+            models.UniqueConstraint(fields=('recipe', 'ingredient',),
+                                    name='unique_recipe_ingredient',),
         ]
 
     def __str__(self):
@@ -155,12 +155,12 @@ class TagInRecipe(models.Model):
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('id',)
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецептов'
         constraints = [
-            models.UniqueConstraint(fields=['recipe', 'tag'],
-                                    name='unique_recipe_tag'),
+            models.UniqueConstraint(fields=('recipe', 'tag',),
+                                    name='unique_recipe_tag',),
         ]
 
     def __str__(self):
@@ -182,12 +182,12 @@ class Favorite(models.Model):
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('id',)
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'],
-                                    name='unique_favorite_user_recipe'),
+            models.UniqueConstraint(fields=('user', 'recipe',),
+                                    name='unique_favorite_user_recipe',),
         ]
 
     def __str__(self):
@@ -209,12 +209,12 @@ class Cart(models.Model):
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('id',)
         verbose_name = 'Корзина'
         verbose_name_plural = 'В корзине'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'],
-                                    name='unique_cart_user_recipe')
+            models.UniqueConstraint(fields=('user', 'recipe',),
+                                    name='unique_cart_user_recipe',),
         ]
 
     def __str__(self):

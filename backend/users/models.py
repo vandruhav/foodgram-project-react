@@ -23,10 +23,10 @@ class MyUser(AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', ]
+    REQUIRED_FIELDS = ('username',)
 
     class Meta:
-        ordering = ['username']
+        ordering = ('username',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
@@ -49,11 +49,11 @@ class Follow(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         constraints = [
-            models.UniqueConstraint(fields=['user', 'author'],
+            models.UniqueConstraint(fields=('user', 'author',),
                                     name='unique_follow',),
             models.CheckConstraint(check=~models.Q(user=models.F('author')),
                                    name='user_not_author',),
