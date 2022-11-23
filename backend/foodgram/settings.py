@@ -74,10 +74,11 @@ else:
             'USER': os.getenv('POSTGRES_USER', default=''),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD', default=''),
             'HOST': os.getenv('DB_HOST', default=''),
-            'PORT': os.getenv('DB_PORT', default=''),
+            'PORT': int(os.getenv('DB_PORT', default='0')),
         }
     }
-
+print(DEBUG)
+print(DATABASES['default'])
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
