@@ -69,16 +69,16 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': os.getenv('DB_ENGINE', default=''),
-            'NAME': os.getenv('DB_NAME', default=''),
-            'USER': os.getenv('POSTGRES_USER', default=''),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', default=''),
-            'HOST': os.getenv('DB_HOST', default=''),
+            'ENGINE': os.getenv('DB_ENGINE',
+                                default='django.db.backends.sqlite3'),
+            'NAME': os.getenv('DB_NAME', default='name'),
+            'USER': os.getenv('POSTGRES_USER', default='user'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='password'),
+            'HOST': os.getenv('DB_HOST', default='db'),
             'PORT': int(os.getenv('DB_PORT', default='0')),
         }
     }
-print(DEBUG)
-print(DATABASES['default'])
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
