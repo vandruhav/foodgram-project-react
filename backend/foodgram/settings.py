@@ -69,13 +69,12 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': os.getenv('DB_ENGINE',
-                                default='django.db.backends.sqlite3'),
+            'ENGINE': os.getenv('DB_ENGINE', default='engine'),
             'NAME': os.getenv('DB_NAME', default='name'),
             'USER': os.getenv('POSTGRES_USER', default='user'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='password'),
-            'HOST': os.getenv('DB_HOST', default='db'),
-            'PORT': int(os.getenv('DB_PORT', default='0')),
+            'HOST': os.getenv('DB_HOST', default='host'),
+            'PORT': os.getenv('DB_PORT', default='1'),
         }
     }
 
