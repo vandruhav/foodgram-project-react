@@ -10,7 +10,7 @@ services:
       - ../.env
 
   web:
-    image: vandruhav/foodgram-backend:v1
+    image: vandruhav/foodgram_backend:v1
     restart: always
     volumes:
       - static_value:/foodgram/static_backend/
