@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for file, table in file_table.items():
-            with open(f'../data/{file}', 'r', encoding='utf8') as f:
+            with open(f'./{file}', 'r', encoding='utf8') as f:
                 fieldnames = ['name', 'measurement_unit']
                 dr = csv.DictReader(f, delimiter=',', fieldnames=fieldnames)
                 for row in dr:

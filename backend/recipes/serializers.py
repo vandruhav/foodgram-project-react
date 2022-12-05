@@ -75,24 +75,29 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        ingredients = self.initial_data.get('ingredients')
-        if not ingredients:
-            raise serializers.ValidationError('Добавьте ингредиент!')
         tags = self.initial_data.get('tags')
         if not tags:
             raise serializers.ValidationError('Добавьте тег!')
+        ingredients = self.initial_data.get('ingredients')
+        if not ingredients:
+            raise serializers.ValidationError('Добавьте ингредиент!')
         total_ingredients = []
         for ingredient in ingredients:
             obj = get_object_or_404(Ingredient, id=ingredient['id'])
             if obj in total_ingredients:
                 raise serializers.ValidationError('Ингредиент есть в рецепте!')
-            total_ingredients.append(obj)
-            if not isinstance(ingredient['amount'], int):
-                raise serializers.ValidationError(
-                    'Количество ингредиента должно быть целым числом!'
-                )
-            if int(ingredient['amount']) <= 0:
+            if int(ingredient['amount']) < 1:
                 raise serializers.ValidationError('Минимальное количество - 1!')
+            raise serializers.ValidationError(
+                f"{type(ingredient['amount'])} - {ingredient['amount']}"
+            )
+            if not ingredient['amount'].isdigit:
+#            if not isinstance(ingredient['amount'], int):
+                raise serializers.ValidationError(
+                    f"!Тип = {type(ingredient['amount'])}!"
+#                    'Количество ингредиента должно быть целым числом!'
+                )
+            total_ingredients.append(obj)
         data['ingredients'] = ingredients
         return data
 
