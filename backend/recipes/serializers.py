@@ -86,17 +86,14 @@ class RecipeSerializer(serializers.ModelSerializer):
             obj = get_object_or_404(Ingredient, id=ingredient['id'])
             if obj in total_ingredients:
                 raise serializers.ValidationError('Ингредиент есть в рецепте!')
-            if int(ingredient['amount']) < 1:
-                raise serializers.ValidationError('Минимальное количество - 1!')
-            raise serializers.ValidationError(
-                f"{type(ingredient['amount'])} - {ingredient['amount']}"
-            )
-            if not ingredient['amount'].isdigit:
-#            if not isinstance(ingredient['amount'], int):
+            try:
+                amount = int(ingredient['amount'])
+            except Exception:
                 raise serializers.ValidationError(
-                    f"!Тип = {type(ingredient['amount'])}!"
-#                    'Количество ингредиента должно быть целым числом!'
+                    'Количество ингредиента должно быть целым числом!'
                 )
+            if amount < 1:
+                raise serializers.ValidationError('Минимальное количество - 1!')
             total_ingredients.append(obj)
         data['ingredients'] = ingredients
         return data
