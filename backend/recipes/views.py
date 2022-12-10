@@ -4,18 +4,18 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .filters import IngredientFilter, RecipeFilter
-from .models import Tag, Ingredient, Recipe, Favorite, Cart, IngredientInRecipe
+from .models import Cart, Favorite, Ingredient, IngredientInRecipe, Recipe, Tag
 from .permissions import AuthorOrReadOnly
 from .serializers import (
-    TagSerializer, IngredientSerializer, RecipeSerializer,
-    RecipesInFollowSerializer
+    IngredientSerializer, RecipeSerializer, RecipesInFollowSerializer,
+    TagSerializer
 )
 
 
