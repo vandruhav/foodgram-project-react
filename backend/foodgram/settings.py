@@ -106,7 +106,7 @@ AUTH_USER_MODEL = 'users.MyUser'
 
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_backend')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, '../docs/'),)
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, '../docs/'),)
 
 MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_backend')
