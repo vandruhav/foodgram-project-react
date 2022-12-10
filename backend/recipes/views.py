@@ -13,10 +13,8 @@ from rest_framework.response import Response
 from .filters import IngredientFilter, RecipeFilter
 from .models import Cart, Favorite, Ingredient, IngredientInRecipe, Recipe, Tag
 from .permissions import AuthorOrReadOnly
-from .serializers import (
-    IngredientSerializer, RecipesInFollowSerializer, RecipeSerializer,
-    TagSerializer
-)
+from .serializers import IngredientSerializer, RecipesInFollowSerializer
+from .serializers import RecipeSerializer, TagSerializer
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
