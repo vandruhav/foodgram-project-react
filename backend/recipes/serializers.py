@@ -4,7 +4,7 @@ from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from .models import Tag, Ingredient, Recipe, IngredientInRecipe
+from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 from users.serializers import MyUserSerializer
 
 
