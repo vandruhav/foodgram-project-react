@@ -4,8 +4,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 from users.serializers import MyUserSerializer
+from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 
 
 class Base64ImageField(serializers.ImageField):
@@ -93,7 +93,9 @@ class RecipeSerializer(serializers.ModelSerializer):
                     'Количество ингредиента должно быть целым числом!'
                 )
             if amount < 1:
-                raise serializers.ValidationError('Минимальное количество - 1!')
+                raise serializers.ValidationError(
+                    'Минимальное количество - 1!'
+                )
             total_ingredients.append(obj)
         data['ingredients'] = ingredients
         return data
