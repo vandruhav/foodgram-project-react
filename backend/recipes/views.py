@@ -14,7 +14,7 @@ from .filters import IngredientFilter, RecipeFilter
 from .models import Cart, Favorite, Ingredient, IngredientInRecipe, Recipe, Tag
 from .permissions import AuthorOrReadOnly
 from .serializers import (
-    IngredientSerializer, RecipeSerializer, RecipesInFollowSerializer,
+    IngredientSerializer, RecipesInFollowSerializer, RecipeSerializer,
     TagSerializer
 )
 
