@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
-from .models import MyUser, Follow
+from .models import Follow, MyUser
 
 
 class MyUserCreateSerializer(UserCreateSerializer):
