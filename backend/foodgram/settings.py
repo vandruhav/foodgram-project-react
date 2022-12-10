@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
-#    'corsheaders',
     'djoser',
     'users.apps.UsersConfig',
     'recipes.apps.RecipesConfig',
@@ -31,7 +30,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-#    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,12 +57,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='engine'),
@@ -106,7 +98,6 @@ AUTH_USER_MODEL = 'users.MyUser'
 
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_backend')
-#STATICFILES_DIRS = (os.path.join(BASE_DIR, '../docs/'),)
 
 MEDIA_URL = '/mediafiles/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_backend')
@@ -135,6 +126,3 @@ DJOSER = {
         'user': ('rest_framework.permissions.IsAuthenticated',),
     },
 }
-
-#CORS_ALLOWED_ORIGINS = ['http://localhost:3000', ]
-#CORS_URLS_REGEX = r'^/api/.*$'
