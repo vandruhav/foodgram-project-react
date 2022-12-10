@@ -48,16 +48,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def favorite(self, request, pk):
         if request.method == 'POST':
             return self.add_obj(Favorite, request.user, pk)
-        else:
-            return self.del_obj(Favorite, request.user, pk)
+        return self.del_obj(Favorite, request.user, pk)
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
             return self.add_obj(Cart, request.user, pk)
-        else:
-            return self.del_obj(Cart, request.user, pk)
+        return self.del_obj(Cart, request.user, pk)
 
     def add_obj(self, model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
