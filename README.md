@@ -1,6 +1,7 @@
 # Дипломная работа Foodgram
 
-[![Foodgram](https://github.com/vandruhav/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master)](http://vandruhav.sytes.net/admin/)
+[![Foodgram](https://github.com/vandruhav/foodgram-project-react/actions
+/workflows/foodgram.yml/badge.svg?branch=master)](http://vandruhav.sytes.net/)
 
 ## Описание проекта
 Foodgram - продуктовый помощник с базой кулинарных рецептов. Позволяет
