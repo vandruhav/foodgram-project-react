@@ -2,6 +2,11 @@
 
 [![Foodgram](https://github.com/vandruhav/foodgram-project-react/actions/workflows/foodgram.yml/badge.svg?branch=master)](http://vandruhav.sytes.net/)
 
+[![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
+[![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
+[![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
+
 ## Описание проекта
 Foodgram - продуктовый помощник с базой кулинарных рецептов. Позволяет
 публиковать рецепты, сохранять избранные, а также формировать список покупок
