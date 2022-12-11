@@ -9,6 +9,13 @@ services:
     env_file:
       - ../.env
 
+  frontend:
+    image: vandruhav/foodgram_frontend:v1
+    volumes:
+      - ../frontend/:/app/result_build/
+    depends_on:
+      - db
+
   web:
     image: vandruhav/foodgram_backend:v1
     restart: always
@@ -18,14 +25,7 @@ services:
     env_file:
       - ../.env
     depends_on:
-      - db
-
-  frontend:
-    image: vandruhav/foodgram_frontend:v1
-    volumes:
-      - ../frontend/:/app/result_build/
-    depends_on:
-      - web
+      - frontend
 
   nginx:
     image: nginx:1.19.3
@@ -39,7 +39,7 @@ services:
       - static_value:/var/html/static_backend/
       - media_value:/var/html/media_backend/
     depends_on:
-      - frontend
+      - web
 
 volumes:
   db_value:
