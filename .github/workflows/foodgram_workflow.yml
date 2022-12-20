@@ -71,6 +71,7 @@ jobs:
           script: |
             sudo docker-compose -f infra/docker-compose.yml down
             sudo docker system prune -af
+            sudo rm -rf frontend
             rm -f .env
             touch .env
             sudo echo SECRET_KEY="${{ secrets.SECRET_KEY }}" > .env
