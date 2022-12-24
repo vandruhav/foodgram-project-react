@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import (MaxValueValidator, MinValueValidator,
+                                    RegexValidator)
+
 from django.db import models
 
 
@@ -38,7 +40,7 @@ class Tag(models.Model):
         super().clean()
         self.color = self.color.upper()
         if Tag.objects.filter(color=self.color).exists():
-            raise ValidationError('Такой цвет уже существует!')
+            raise ValidationError('')
 
     def __str__(self):
         return self.name
@@ -99,7 +101,11 @@ class Recipe(models.Model):
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления',
         validators=[
-            MinValueValidator(1, message='Минимальное время - 1 минута!',),
+            MinValueValidator(1, message='Минимальное время - 1 минута!'),
+            MaxValueValidator(
+                settings.MAX_SMALL_INT,
+                message=f'Максимальное время - {settings.MAX_SMALL_INT} минут!'
+            ),
         ],
     )
     pub_date = models.DateTimeField(
@@ -132,7 +138,11 @@ class IngredientInRecipe(models.Model):
     amount = models.PositiveSmallIntegerField(
         verbose_name='Количество ингредиента',
         validators=[
-            MinValueValidator(1, message='Минимальное количество - 1!',),
+            MinValueValidator(1, message='Минимальное количество - 1!'),
+            MaxValueValidator(
+                settings.MAX_SMALL_INT,
+                message=f'Максимальное количество - {settings.MAX_SMALL_INT}!'
+            ),
         ],
     )
 

@@ -1,5 +1,6 @@
 import base64
 
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
@@ -92,9 +93,10 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'Количество ингредиента должно быть целым числом!'
                 )
-            if amount < 1 or amount > 32767:
+            if amount < 1 or amount > settings.MAX_SMALL_INT:
                 raise serializers.ValidationError(
-                    'Количество ингредиента должно быть от 1 до 32767!'
+                    'Количество ингредиента должно быть от 1 до '
+                    f'{settings.MAX_SMALL_INT}!'
                 )
             total_ingredients.append(obj)
         data['ingredients'] = ingredients

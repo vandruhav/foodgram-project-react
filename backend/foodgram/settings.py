@@ -126,3 +126,5 @@ DJOSER = {
         'user': ('rest_framework.permissions.IsAuthenticated',),
     },
 }
+
+MAX_SMALL_INT = 32767
