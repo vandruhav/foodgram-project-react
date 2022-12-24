@@ -92,9 +92,9 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     'Количество ингредиента должно быть целым числом!'
                 )
-            if amount < 1:
+            if amount < 1 or amount > 32767:
                 raise serializers.ValidationError(
-                    'Минимальное количество - 1!'
+                    'Количество ингредиента должно быть от 1 до 32767!'
                 )
             total_ingredients.append(obj)
         data['ingredients'] = ingredients

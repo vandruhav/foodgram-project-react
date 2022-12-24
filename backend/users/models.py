@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -58,6 +59,11 @@ class Follow(models.Model):
             models.CheckConstraint(check=~models.Q(user=models.F('author')),
                                    name='user_not_author',),
         ]
+
+    def clean(self):
+        super().clean()
+        if self.author == self.user:
+            raise ValidationError('Подписка на самого себя запрещена!')
 
     def __str__(self):
         return f'{self.user} подписан на {self.author}'

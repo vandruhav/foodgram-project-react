@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 
@@ -16,7 +17,9 @@ class Tag(models.Model):
         validators=[
             RegexValidator(
                 regex='^#[A-Fa-f0-9]{6}$',
-                message='Ошибка ввода цветового HEX-кода!',
+                message=('Ошибка формата ввода (формат: #XXXXXX или #xxxxxx,'
+                         ' где X или x - шестнадцатеричные цифры в верхнем '
+                         'или в нижнем регистрах)!'),
             ),
         ],
     )
@@ -30,6 +33,12 @@ class Tag(models.Model):
         ordering = ('name',)
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+
+    def clean(self):
+        super().clean()
+        self.color = self.color.upper()
+        if Tag.objects.filter(color=self.color).exists():
+            raise ValidationError('Такой цвет уже существует!')
 
     def __str__(self):
         return self.name
