@@ -38,8 +38,6 @@ class Tag(models.Model):
     def clean(self):
         super().clean()
         self.color = self.color.upper()
-        if Tag.objects.filter(color=self.color).exists():
-            raise ValidationError('')
 
     def __str__(self):
         return self.name
