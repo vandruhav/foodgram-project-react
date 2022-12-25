@@ -1,3 +1,4 @@
+"""Модели приложения 'recipes'."""
 from django.conf import settings
 from django.core.validators import (MaxValueValidator, MinValueValidator,
                                     RegexValidator)
@@ -5,6 +6,8 @@ from django.db import models
 
 
 class Tag(models.Model):
+    """Модель тегов."""
+
     name = models.CharField(
         max_length=200,
         unique=True,
@@ -30,19 +33,25 @@ class Tag(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели тегов."""
+
         ordering = ('name',)
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
     def clean(self):
+        """Функция валидации тегов."""
         super().clean()
         self.color = self.color.upper()
 
     def __str__(self):
+        """Функция строкового представления тегов."""
         return self.name
 
 
 class Ingredient(models.Model):
+    """Модель ингредиентов."""
+
     name = models.CharField(
         max_length=200,
         db_index=True,
@@ -54,6 +63,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели ингредиентов."""
+
         ordering = ('name',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
@@ -63,10 +74,13 @@ class Ingredient(models.Model):
         ]
 
     def __str__(self):
+        """Функция строкового представления ингредиентов."""
         return f'{self.name}, {self.measurement_unit}'
 
 
 class Recipe(models.Model):
+    """Модель рецептов."""
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -110,15 +124,20 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели рецептов."""
+
         ordering = ('-pub_date',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
     def __str__(self):
+        """Функция строкового представления рецептов."""
         return self.name
 
 
 class IngredientInRecipe(models.Model):
+    """Модель ингредиентов в рецептах."""
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -143,6 +162,8 @@ class IngredientInRecipe(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели ингредиентов в рецептах."""
+
         ordering = ('id',)
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецептах'
@@ -152,10 +173,13 @@ class IngredientInRecipe(models.Model):
         ]
 
     def __str__(self):
+        """Строковое представление ингредиентов в рецептах."""
         return f'В {self.recipe} {self.amount} {self.ingredient}'
 
 
 class TagInRecipe(models.Model):
+    """Модель тегов в рецептах."""
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -170,6 +194,8 @@ class TagInRecipe(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели тегов в рецептах."""
+
         ordering = ('id',)
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецептов'
@@ -179,10 +205,13 @@ class TagInRecipe(models.Model):
         ]
 
     def __str__(self):
+        """Строковое представление тегов в рецептах."""
         return f'{self.recipe} на {self.tag}'
 
 
 class Favorite(models.Model):
+    """Модель избранного."""
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -197,6 +226,8 @@ class Favorite(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели избранного."""
+
         ordering = ('id',)
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
@@ -206,10 +237,12 @@ class Favorite(models.Model):
         ]
 
     def __str__(self):
+        """Строковое представление избранного."""
         return f'{self.user} избрал {self.recipe}'
 
 
 class Cart(models.Model):
+    """Модель корзины."""
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -224,6 +257,8 @@ class Cart(models.Model):
     )
 
     class Meta:
+        """Meta-класс модели корзины."""
+
         ordering = ('id',)
         verbose_name = 'Корзина'
         verbose_name_plural = 'В корзине'
@@ -233,4 +268,5 @@ class Cart(models.Model):
         ]
 
     def __str__(self):
+        """Строковое представление корзины."""
         return f'{self.user} положил в корзину {self.recipe}'

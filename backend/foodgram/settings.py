@@ -1,3 +1,4 @@
+"""Настройки проекта 'foodgram'."""
 import os
 
 from dotenv import load_dotenv
@@ -127,4 +128,4 @@ DJOSER = {
     },
 }
 
-MAX_SMALL_INT = 32767
+MAX_SMALL_INT = 32767  # Максимальное целое для PositiveSmallIntegerField

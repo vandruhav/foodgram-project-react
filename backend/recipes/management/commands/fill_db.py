@@ -1,3 +1,4 @@
+"""Пользовательские команды django-admin проекта 'foodgram'."""
 import csv
 
 from django.core.management.base import BaseCommand
@@ -11,9 +12,12 @@ file_table = {
 
 
 class Command(BaseCommand):
+    """Класс, расширяющий BaseCommand."""
+
     help = 'Заполнение БД'
 
     def handle(self, *args, **options):
+        """Функция, заполняющая БД исходными данными."""
         for file, table in file_table.items():
             with open(f'data/{file}', 'r', encoding='utf8') as f:
                 if file == 'ingredients.csv':

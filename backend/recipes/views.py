@@ -1,3 +1,4 @@
+"""Представления приложения 'recipes'."""
 from datetime import datetime
 
 from django.db.models import Sum
@@ -18,12 +19,16 @@ from .serializers import (IngredientSerializer, RecipeSerializer,
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
+    """Представление для работы с тегами."""
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    """Представление для работы с ингредиентами."""
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (IngredientFilter, SearchFilter,)
@@ -32,6 +37,8 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
+    """Представление для работы с рецептами."""
+
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -39,11 +46,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (AuthorOrReadOnly,)
 
     def perform_create(self, serializer):
+        """Функция для работы с созданием рецепта."""
         serializer.save(author=self.request.user)
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk):
+        """Функция для записи/удаления рецепта в избранное/из избранного."""
         if request.method == 'POST':
             return self.add_obj(Favorite, request.user, pk)
         return self.del_obj(Favorite, request.user, pk)
@@ -51,11 +60,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk):
+        """Функция для записи/удаления рецепта в корзину/из корзины."""
         if request.method == 'POST':
             return self.add_obj(Cart, request.user, pk)
         return self.del_obj(Cart, request.user, pk)
 
     def add_obj(self, model, user, pk):
+        """Функция для записи рецепта в модель БД."""
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response(
                 {'errors': 'Рецепт уже добавлен!'},
@@ -67,6 +78,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def del_obj(self, model, user, pk):
+        """Функция для удаления рецепта из модели БД."""
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
             obj.delete()
@@ -81,6 +93,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated]
     )
     def download_shopping_cart(self, request):
+        """Функция для сохранения в файл ингредиентов рецептов из корзины."""
         user = request.user
         if not user.cart.exists():
             return Response(

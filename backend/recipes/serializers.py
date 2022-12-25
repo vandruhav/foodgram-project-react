@@ -1,3 +1,4 @@
+"""Сериализаторы приложения 'recipes'."""
 import base64
 
 from django.conf import settings
@@ -10,8 +11,10 @@ from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 
 
 class Base64ImageField(serializers.ImageField):
+    """Класс поля для хранения фото."""
 
     def to_internal_value(self, data):
+        """Функция декодирования данных."""
         if isinstance(data, str) and data.startswith('data:image'):
             format, imgstr = data.split(';base64,')
             ext = format.split('/')[-1]
@@ -20,20 +23,28 @@ class Base64ImageField(serializers.ImageField):
 
 
 class TagSerializer(serializers.ModelSerializer):
+    """Сериализатор тегов."""
 
     class Meta:
+        """Meta-класс сериализатора тегов."""
+
         model = Tag
         fields = ('id', 'name', 'color', 'slug',)
 
 
 class IngredientSerializer(serializers.ModelSerializer):
+    """Сериализатор ингредиентов."""
 
     class Meta:
+        """Meta-класс сериализатора ингредиентов."""
+
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit',)
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор ингредиентов в рецептах."""
+
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -41,11 +52,15 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Meta-класс сериализатора ингредиентов в рецептах."""
+
         model = IngredientInRecipe
         fields = ('id', 'name', 'measurement_unit', 'amount',)
 
 
 class RecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор рецептов."""
+
     tags = TagSerializer(many=True, read_only=True)
     author = MyUserSerializer(read_only=True)
     ingredients = IngredientInRecipeSerializer(source='ingredients_of_recipe',
@@ -55,12 +70,15 @@ class RecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField()
 
     class Meta:
+        """Meta-класс сериализатора рецептов."""
+
         model = Recipe
         fields = ('id', 'tags', 'author', 'ingredients', 'is_favorited',
                   'is_in_shopping_cart', 'name', 'image', 'text',
                   'cooking_time',)
 
     def get_is_favorited(self, obj):
+        """Функция определения нахождения рецепта в избранном."""
         user = self.context.get('request').user
         return (
                 user.is_authenticated
@@ -69,6 +87,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def get_is_in_shopping_cart(self, obj):
+        """Функция определения нахождения рецепта в корзине."""
         user = self.context.get('request').user
         return (
                 user.is_authenticated
@@ -76,6 +95,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
+        """Функция валидации данных."""
         tags = self.initial_data.get('tags')
         if not tags:
             raise serializers.ValidationError('Добавьте тег!')
@@ -103,6 +123,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     def create_ingredients(self, ingredients, recipe):
+        """Функция создания ингредиентов."""
         for ingredient in ingredients:
             IngredientInRecipe.objects.create(
                 recipe=recipe,
@@ -111,6 +132,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             )
 
     def create(self, validated_data):
+        """Функция создания рецепта."""
         image = validated_data.pop('image')
         ingredients_data = validated_data.pop('ingredients')
         recipe = Recipe.objects.create(image=image, **validated_data)
@@ -120,6 +142,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return recipe
 
     def update(self, instance, validated_data):
+        """Функция обновления рецепта."""
         instance.image = validated_data.get('image', instance.image)
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
@@ -136,6 +159,10 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class RecipesInFollowSerializer(serializers.ModelSerializer):
+    """Сериализатор рецептов в подписках."""
+
     class Meta:
+        """Meta-класс сериализатора рецептов в подписках."""
+
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time',)

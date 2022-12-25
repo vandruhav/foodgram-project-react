@@ -1,3 +1,4 @@
+"""Сериализаторы приложения 'users'."""
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
@@ -6,22 +7,30 @@ from .models import Follow, MyUser
 
 
 class MyUserCreateSerializer(UserCreateSerializer):
+    """Сериализатор создания пользователей."""
 
     class Meta:
+        """Meta-класс сериализатора создания пользователей."""
+
         model = MyUser
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
                   'password',)
 
 
 class MyUserSerializer(UserSerializer):
+    """Сериализатор пользователей."""
+
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
+        """Meta-класс сериализатора пользователей."""
+
         model = MyUser
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
                   'is_subscribed',)
 
     def get_is_subscribed(self, obj):
+        """Функция определения подписок."""
         user = self.context.get('request').user
         return (
                 user.is_authenticated
@@ -30,6 +39,8 @@ class MyUserSerializer(UserSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    """Сериализатор подписок."""
+
     email = serializers.ReadOnlyField(source='author.email')
     id = serializers.ReadOnlyField(source='author.id')
     username = serializers.ReadOnlyField(source='author.username')
@@ -40,11 +51,14 @@ class FollowSerializer(serializers.ModelSerializer):
     recipes_count = serializers.SerializerMethodField()
 
     class Meta:
+        """Meta-класс сериализатора подписок."""
+
         model = Follow
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
                   'is_subscribed', 'recipes', 'recipes_count',)
 
     def get_is_subscribed(self, obj):
+        """Функция определения подписок."""
         user = self.context.get('request').user
         return (
                 user.is_authenticated
@@ -54,6 +68,7 @@ class FollowSerializer(serializers.ModelSerializer):
         )
 
     def get_recipes(self, obj):
+        """Функция получения рецептов."""
         from recipes.models import Recipe
         from recipes.serializers import RecipesInFollowSerializer
         try:
@@ -66,9 +81,11 @@ class FollowSerializer(serializers.ModelSerializer):
         return RecipesInFollowSerializer(recipes, many=True).data
 
     def get_recipes_count(self, obj):
+        """Функция получения количества рецептов."""
         return obj.author.recipes.count()
 
     def validate(self, data):
+        """Функция валидации данных."""
         user = self.context.get("request").user
         author_id = self.context.get('view').kwargs.get('id')
         author = get_object_or_404(MyUser, id=author_id)
